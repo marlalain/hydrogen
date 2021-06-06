@@ -43,7 +43,9 @@ dsample_command_bootstrap () {
     if [ ! -d "${HYDRO_FOLDER}" ]; then
         system "Hydro is getting set up for the first time..."
         mkdir -p "${HYDRO_FOLDER}/src/"
-        mkdir -p "${HYDRO_FOLDER}{bin, lib}"
+        mkdir -p "${HYDRO_FOLDER}/bin"
+        mkdir -p "${HYDRO_FOLDER}/lib"
+        mkdir -p "${HYDRO_FOLDER}/share"
     else
         system "To bootstrap with hydro already set up the original '${HYDRO_FOLDER}' needs to be deleted"
         ask "Is that ok? [no] "
