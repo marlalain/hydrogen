@@ -2,10 +2,10 @@
 
 # TODO add support for bash
 # \033[38;2;<R>;<G>;<B>m
-red="\033[38;2;200;20;20m"
-green="\033[38;2;20;200;20m"
-blue="\033[38;2;20;20;200m"
-reset="\033[38;2;200;200;200m" # FIXME
+red="\033[38;5;1m"
+blue="\033[38;5;4m"
+reset="\033[m"
+green="\033[38;5;2m"
 set -eu
 
 . "./dispatch.sh"
@@ -38,20 +38,37 @@ dsample_option_help () {
 
 dsample_command_bootstrap () {
     HYDRO_FOLDER="${HOME}/.hydro"
+    HYDROGENS_GIT="https://www.github.com/paulo-e/hydrogens"
+
     if [ ! -d "${HYDRO_FOLDER}" ]; then
-        system "Hydro is getting for the first time..."
-        mkdir -p "${HYDRO_FOLDER}/src/.scripts"
+        system "Hydro is getting set up for the first time..."
+        mkdir -p "${HYDRO_FOLDER}/src/"
         mkdir -p "${HYDRO_FOLDER}{bin, lib}"
     else
-        printf "To bootstrap with hydro already set up the original '%s' needs to be deleted. " "${HYDRO_FOLDER}"
-        printf "Is that ok? [yes] "
+        system "To bootstrap with hydro already set up the original '${HYDRO_FOLDER}' needs to be deleted"
+        ask "Is that ok? [no] "
         read -r input
-        if [ ${input-"yes"} = "yes" ]; then
-            rm -rf $HYDRO_FOLDER
+        if [ "${input-'yes'}" = "yes" ]; then
+            rm -rf "$HYDRO_FOLDER"
         else
             error "Nothing left to do"
+            exit 1
         fi
     fi
+
+    cmd_exists git
+
+    say "Cloning scripts repository..."
+    git clone "${HYDROGENS_GIT}" "$HYDRO_FOLDER/src/.scripts"
+
+    finish "Done!"
+}
+
+dsample_command_install () {
+    HYDRO_FOLDER="${HOME}/.hydro"
+    HYDRO_SCRIPTS="${HYDRO_FOLDER}/src/.scripts"
+
+    ls "${HYDRO_SCRIPTS}"
 }
 
 dsample_ () {
