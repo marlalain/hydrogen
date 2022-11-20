@@ -1,6 +1,8 @@
 # Changes zsh globbing patterns
 unsetopt NO_MATCH >/dev/null 2>&1 || :
 
+# <3 I love u
+
 # Dispatches calls of commands and arguments
 dispatch ()
 {
